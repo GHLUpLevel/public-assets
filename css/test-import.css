@@ -1,0 +1,235 @@
+/* joe */
+/**
+ * GHL mobile preview adds a --mobile class when previewing in mobile.
+ * Either add SCSS support and duplicate section where mobile screen is targeted...
+ * e.g. @media (max-width: 480px) OR .--mobile
+ * Or only target --mobile and use JS to add the --mobile class to the body
+ * when the screen size changes.
+ * Or use a polyfill like https://github.com/marcj/css-element-queries
+ *
+ * Or even better, use container queries: https://www.w3.org/TR/css-contain-3/
+ *
+ * Use display:grid instead of flex when full grid control is needed.
+ * e.g. Mobile image grid
+ */
+/* Set container type for both editor and preview / live modes */
+/* TODO: might need to find a different solution since container-type breaks position:fixed elements.
+          For fixed elements, just need to move them outside of the container. */
+/* TODO !!!! only set container-type as needed like on .flexrow
+        This will allow for fixed items outside of container-types to work as expected */
+/* #preview-container,
+.hl_page-creator--content {
+  container-type: inline-size;
+  container-name: ViewPort;
+} */
+/**
+ * Set Fonts to Custom Values
+ * This only works in preview / live mode and will break the fonts in the editor.
+ * Scope to preview / live mode only.
+ * Custom Values are parsed on the frontend and injected via javascript. They might cause
+ * a screen flash?
+ */
+:root #preview-container {
+  --headlinefont: "{{ custom_values.font_headline }}";
+  --contentfont: "{{ custom_values.font_content }}";
+}
+
+/* Background green circle floating upper left */
+.circle-top-left::before {
+  content: "";
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><circle cx="100" cy="100" r="78" fill="transparent" stroke="%23079561" stroke-width="32px" /></svg>') no-repeat center center/contain;
+  position: absolute;
+  top: -15%;
+  left: -6%;
+  width: 45%;
+  height: 45%;
+  animation: animatedBackgroundCircle 10s linear 1 alternate;
+}
+
+@keyframes animatedBackgroundCircle {
+  from {
+    top: 0;
+  }
+  to {
+    top: -15%;
+  }
+}
+/* Section Width: Default */
+.c-section > .inner {
+  max-width: 1342px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+}
+
+/* Utility Classes: Gaps */
+.gap-10 > .inner {
+  gap: 10px;
+}
+
+/* Utility Classes: Grid */
+.mobile-grid-cols-2 {
+  container-type: inline-size;
+}
+
+.grid-col-span-2,
+div.c-wrapper:has(.grid-col-span-2) {
+  grid-column: span 2;
+}
+
+@container (max-width: 480px) {
+  .mobile-grid-cols-2 > .inner {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    justify-items: center;
+  }
+  .mobile-order-1 {
+    order: 1;
+  }
+  .mobile-order-2 {
+    order: 2;
+  }
+  .mobile-order-3 {
+    order: 3;
+  }
+  .mobile-order-4 {
+    order: 4;
+  }
+  .mobile-order-5 {
+    order: 5;
+  }
+  .mobile-order-6 {
+    order: 6;
+  }
+}
+/* HERO */
+/* Feature Image: Person */
+/* NOTE: GHL does not add custom classes to image feature elements in editor mode, only in preview or live mode.
+         It's better to target c-image-feature with a wrapper class on a section, row, or column since those
+         are targettable in editor mode. */
+.hero .c-image-feature {
+  width: 100%;
+}
+
+.hero .img-feature-container {
+  display: flex !important;
+}
+
+.hero .img-feature-container .img-container {
+  flex: 0 0 auto;
+  width: auto !important;
+}
+
+.hero .img-feature-container .txt-container {
+  flex: 0 1 auto;
+  width: auto !important;
+}
+
+/* Flex Row */
+.align-self-center {
+  align-self: center;
+}
+
+.align-self-start {
+  align-self: flex-start;
+}
+
+.flexrow .c-column > .inner,
+.flexrow.c-column > .inner {
+  container-type: inline-size;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  justify-content: space-evenly;
+  /* justify-content: flex-start !important; */
+  /* TODO
+  gap: 1em;
+  Now @container below will adjust based on this container
+  container-type: inline-size;
+   */
+}
+
+@container (max-width: 480px) {
+  /* Make buttons expand to full width on mobile */
+  .flexrow .c-button {
+    flex-basis: 100% !important;
+    margin-right: 0;
+  }
+  .flexrow .c-button button {
+    width: 100%;
+  }
+}
+/* Buttons */
+button.btn-primary,
+.btn-primary button {
+  box-shadow: 0 12px 35px 0 rgba(7, 149, 97, 0.21);
+}
+
+button.btn-primary:hover,
+.btn-primary button:hover {
+  box-shadow: 0 0 0 0 rgba(7, 149, 97, 0.21);
+  transform: scale(0.95);
+}
+
+button.btn-secondary,
+.btn-secondary button {
+  /* empty */
+}
+
+button.btn-secondary:hover,
+.btn-secondary button:hover {
+  background-color: #079561;
+  color: white;
+}
+
+/* Social Links */
+ul.social-links {
+  padding: 0;
+  display: flex;
+}
+
+.social-links li {
+  list-style: none;
+}
+
+.social-links li a {
+  margin: 0 5px 10px;
+}
+
+.social-links li a i {
+  padding: 5px;
+  border: 1px solid #9ba8a5;
+  font-size: 20px;
+  background-color: #9ba8a5;
+  border-radius: 40px;
+  color: #ffffff;
+  transition: 0.5s;
+}
+
+.social-links li:hover a i {
+  /* use var for background color */
+  background-color: #079561;
+  color: #ffffff;
+}
+
+.social-links a[href]:not([href^=http]),
+a[href=""],
+a[href="-"] {
+  display: none;
+}
+
+/* FAQs */
+.c-faq .hl-faq-child {
+  box-shadow: 1px 1px 13px -8px;
+  border: none !important;
+  margin-top: 15px;
+}
+
+@media screen and (min-width: 481px) {
+  .c-faq .hl-faq-child-heading {
+    padding-top: 45px;
+    padding-bottom: 45px;
+  }
+}
+
