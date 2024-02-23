@@ -29,10 +29,6 @@
  * Custom Values are parsed on the frontend and injected via javascript. They might cause
  * a screen flash?
  */
-:root #preview-container {
-  --headlinefont: "{{ custom_values.font_headline }}";
-  --contentfont: "{{ custom_values.font_content }}";
-}
 
 /* Background green circle floating upper left */
 .circle-top-left::before {
