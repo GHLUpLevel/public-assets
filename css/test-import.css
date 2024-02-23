@@ -1,45 +1,20 @@
-/* joe */
-/**
- * GHL mobile preview adds a --mobile class when previewing in mobile.
- * Either add SCSS support and duplicate section where mobile screen is targeted...
- * e.g. @media (max-width: 480px) OR .--mobile
- * Or only target --mobile and use JS to add the --mobile class to the body
- * when the screen size changes.
- * Or use a polyfill like https://github.com/marcj/css-element-queries
- *
- * Or even better, use container queries: https://www.w3.org/TR/css-contain-3/
- *
- * Use display:grid instead of flex when full grid control is needed.
- * e.g. Mobile image grid
- */
-/* Set container type for both editor and preview / live modes */
-/* TODO: might need to find a different solution since container-type breaks position:fixed elements.
-          For fixed elements, just need to move them outside of the container. */
-/* TODO !!!! only set container-type as needed like on .flexrow
-        This will allow for fixed items outside of container-types to work as expected */
-/* #preview-container,
-.hl_page-creator--content {
-  container-type: inline-size;
-  container-name: ViewPort;
-} */
-/**
- * Set Fonts to Custom Values
- * This only works in preview / live mode and will break the fonts in the editor.
- * Scope to preview / live mode only.
- * Custom Values are parsed on the frontend and injected via javascript. They might cause
- * a screen flash?
- */
 
-/* Background green circle floating upper left */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Background circle floating upper left */
 .circle-top-left::before {
   content: "";
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><circle cx="100" cy="100" r="78" fill="transparent" stroke="%23079561" stroke-width="32px" /></svg>') no-repeat center center/contain;
+  mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><circle cx="100" cy="100" r="78" fill="transparent" stroke="%23000" stroke-width="32px" /></svg>');
   position: absolute;
   top: -15%;
   left: -6%;
-  width: 45%;
-  height: 45%;
+  width: 200px;
+  height: 200px;
   animation: animatedBackgroundCircle 10s linear 1 alternate;
+  background-color: #000;
+  scale: 1.2;
 }
 
 @keyframes animatedBackgroundCircle {
